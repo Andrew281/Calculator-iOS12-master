@@ -14,7 +14,17 @@ class ViewController: UIViewController {
     
     private var isFinishedTypingNumber: Bool = true
     
-    
+    private var displayValue: Double {
+        get {
+            guard let number = Double(displayLabel.text!) else {
+                fatalError("Cannot convert display label text ")
+            }
+            return number
+        }
+        set {
+            displayLabel.text = String(newValue)
+        }
+    }
     
     @IBAction func calcButtonPressed(_ sender: UIButton) {
         
@@ -22,8 +32,17 @@ class ViewController: UIViewController {
         
         isFinishedTypingNumber = true
         
-        let number = Double(displayLabel.text!)!
-        
+        if let calcMethod = sender.currentTitle {
+            
+            let calculator = CalculatorLogic(number: displayValue)
+            
+            
+            guard let result = calculator.calculate(symbol: calcMethod) else {
+                fatalError("The result of the calculation is nil.")
+            }
+            displayValue = result
+            
+        }
         
     }
     
@@ -38,6 +57,17 @@ class ViewController: UIViewController {
                 displayLabel.text = numValue
                 isFinishedTypingNumber = false
             } else {
+                
+                if numValue == "." {
+                    
+                    let isInt = floor(displayValue) == displayValue
+                    
+                    if isInt == false {
+                        return
+                    }
+                    
+                }
+                
                 displayLabel.text = displayLabel.text! + numValue
             }
             
