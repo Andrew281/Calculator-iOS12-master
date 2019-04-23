@@ -12,10 +12,6 @@ struct CalculatorLogic {
     
     var number: Double
     
-    init(number: Double) {
-        self.number = number
-    }
-    
     func calculate(symbol: String) -> Double? {
    
             if symbol == "+/-" {
